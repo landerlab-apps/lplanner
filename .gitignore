@@ -3,3 +3,10 @@ build/
 DerivedData/
 xcuserdata/
 *.xcuserstate
+
+# Build output never goes in the source tree. Ship .app bundles as GitHub
+# Release assets instead, where they are versioned and downloadable without
+# bloating a clone.
+*.app/
+*.zip
+*.dmg
