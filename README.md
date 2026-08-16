@@ -1,6 +1,6 @@
 # Lplanner
 
-A mixed-gas decompression planner for macOS, iPhone, iPad and Android — one
+A mixed-gas decompression planner for macOS, iPhone, iPad, and Android — one
 decompression engine shared by all of them.
 
     Bühlmann ZHL-16B / ZHL-16C with gradient factors
@@ -8,7 +8,7 @@ decompression engine shared by all of them.
     Open circuit, surface supplied, and closed circuit with setpoint switching
     Trimix, deco gas selection by Max PO2 and Max END, Pyle deep stops
     CNS, OTU, EAD, END, gas density, gas consumption, time to fly
-    Tissue loading carried between dives, ageing in real time
+    Tissue loading carried between dives, aging in real time.
 
 ---
 

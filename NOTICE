@@ -1,6 +1,5 @@
 Lplanner
-Copyright (c) 2026 Carlos Lander
-All rights reserved.
+(c) 2026 Carlos Lander
 
 TERMS
 
@@ -26,7 +25,7 @@ INJURY OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE, ITS USE, OR ANY DIVE
 CONDUCTED IN RELIANCE ON IT.
 
-Decompression is not a solved problem and no model predicts it reliably for
+Decompression is not a solved problem, and no model predicts it reliably for
 every diver on every day. This software is experimental. It probably contains
 errors. The author does not warrant that it accurately implements the
 algorithms it names. Anyone diving a schedule produced by this software does so
@@ -48,3 +47,4 @@ contributed code to it:
 
   Subsurface   https://github.com/subsurface/subsurface        GPL-2.0
   Abysner      https://github.com/NeoTech-Software/Abysner     AGPL-3.0
+  Inspired by William M. Smithers' Z(ach)plan. 

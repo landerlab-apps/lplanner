@@ -1,6 +1,6 @@
 # Lplanner — Manual
 
-A mixed-gas decompression planner for macOS, iPhone, iPad and Android.
+A mixed-gas decompression planner for macOS and Android.
 
 ---
 
@@ -15,6 +15,7 @@ Decompression is not a solved problem. No model predicts it reliably for every
 diver on every day. Cross-check anything you intend to dive against tables or a
 planner you already trust.
 
+**The intended use is educational**
 ---
 
 ## Entering a dive
@@ -27,7 +28,7 @@ Type **Depth**, **Time** and **O2 %** — plus **He %** for trimix — then pres
 - **×** removes one
 - The checkbox leaves a level out of the calculation without deleting it
 
-Press **Calculate**. On a phone the result appears on the **Plan** tab.
+Press **Calculate**. On a phone, the result appears on the **Plan** tab.
 
 ### Closed circuit
 
@@ -40,6 +41,9 @@ on a Mac or iPad. Two more fields appear beside the mix:
 The mix you enter on closed circuit is the **diluent**. It does not set your
 inspired PO2 — the setpoint does — but its inert content still drives your
 tissue loading, and you can see its effect in the EAD column.
+
+You can do any combination of CCR–OC or OC–CCR, as it's done in the Navy.
+Example: CCR SP0.7 from 0-40 feet/ 0-12 meters and SW to OC after; same on return. 
 
 ### Deco gases
 
@@ -106,7 +110,7 @@ phone sideways makes the text bigger rather than merely wider.
 After a dive, press **Next dive** to carry your inert gas loading forward. The
 loading is kept when the app is closed and ages with real time.
 
-While gas is carried you must state a surface interval — **48 hr**, **24 hr**,
+While gas is carried, you must state a surface interval — **48 hr**, **24 hr**,
 or an actual time — before **Calculate** will work. This is deliberate: guessing
 it from the clock would let you get a schedule without confronting the fact that
 a previous dive is still loaded.
@@ -153,7 +157,7 @@ the first stop while keeping the shallow stops short.
 
 ### NDL calculation
 Which gradient factor decides whether a direct, no-stop ascent to the surface is
-still allowed. GF High is the standard behaviour for ZHL16-C. GF Low is stricter
+still allowed. GF High is the standard behavior for ZHL16-C. GF Low is stricter
 and ends the no-decompression phase earlier.
 
 ### Conditions
@@ -167,9 +171,9 @@ profile.
 
 ### Stop depths
 **Stop distance** is the interval between decompression stops — 3 m is the
-convention, some rebreather divers prefer 6 m. **Last stop** is the depth of the
+convention; some rebreather divers prefer 6 m. **Last stop** is the depth of the
 final stop; some prefer pulling the 10 ft / 3 m stop deeper. Both apply to every
-schedule, whichever model, gradient factors or deep stops are in use.
+schedule, whichever model, gradient factors, or deep stops are in use.
 
 ### Deep stops
 Pyle deep stops insert short stops between the bottom and the first normal stop
@@ -178,7 +182,7 @@ post-dive fatigue. Pyle stop time is the minutes spent at each generated stop
 (1–5). Not shown when gradient factors are enabled: GF Low takes over the
 deep-stop role.
 
-### Ascent behaviour (experimental)
+### Ascent behavior (experimental)
 **Extra slow** delays the ascent to the next stop while the off-gassing gradient
 of any compartment — tissue inert tension minus ambient pressure, i.e.
 supersaturation — exceeds 1.25 bar. It only ever adds time at the deeper depth,
@@ -225,7 +229,7 @@ line. If you don't know your RMV, measure it.
 gradient factors after Baker. Inert gas loading is computed against alveolar
 pressure, with water vapour taken as 0.0627 bar (Bühlmann's value, Rq = 1.0).
 
-**VVAL-18 / Thalmann EL-DCM** — the U.S. Navy exponential-linear model:
+**VVAL-18 (79) / Thalmann EL-DCM** — the U.S. Navy exponential-linear model:
 exponential uptake, linear elimination. Gradient factors and conservatism do not
 apply to it, by design. The no-stop limits are checked against the U.S. Navy
 Diving Manual Revision 7.
@@ -257,3 +261,5 @@ without both.
 If a schedule looks wrong, the most useful thing to send is the dive that
 produced it — depth, time, mix, and any Config settings away from their
 defaults — so it can be reproduced exactly.
+
+Any questions? Email me: carlos.lander@etik.com
