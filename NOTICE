@@ -1,0 +1,50 @@
+Lplanner
+Copyright (c) 2026 Carlos Lander
+All rights reserved.
+
+TERMS
+
+The macOS application published on the Releases page of this repository may be
+downloaded and used free of charge, for personal use, subject to the disclaimer
+below. It may not be redistributed, sold, bundled, or modified.
+
+The Android application is distributed through Google Play under that store's
+terms.
+
+Source code is not published. The documentation in this repository may be
+quoted with attribution.
+
+Permission for other uses may well be given. Ask.
+
+NO WARRANTY
+
+THIS SOFTWARE AND THE DECOMPRESSION SCHEDULES IT PRODUCES ARE PROVIDED "AS IS",
+WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES,
+INJURY OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE, ITS USE, OR ANY DIVE
+CONDUCTED IN RELIANCE ON IT.
+
+Decompression is not a solved problem and no model predicts it reliably for
+every diver on every day. This software is experimental. It probably contains
+errors. The author does not warrant that it accurately implements the
+algorithms it names. Anyone diving a schedule produced by this software does so
+entirely at their own risk and remains responsible for verifying it against
+tables or planning software they trust.
+
+ATTRIBUTION
+
+The decompression models implemented in Lplanner are the published work of
+others. Nothing in this notice claims any right in them:
+
+  ZHL-16B and ZHL-16C   A. A. Buhlmann, Decompression - Decompression Sickness
+  VVAL-18 / EL-DCM      E. D. Thalmann, U.S. Navy exponential-linear model
+  Deep stops            R. Pyle, the mean-depth rule
+  Gradient factors      E. Baker
+
+Implementations consulted while verifying this one, neither of which
+contributed code to it:
+
+  Subsurface   https://github.com/subsurface/subsurface        GPL-2.0
+  Abysner      https://github.com/NeoTech-Software/Abysner     AGPL-3.0

@@ -1,0 +1,9 @@
+.DS_Store
+
+# Built applications are Release assets, never files in the tree.
+*.app/
+*.zip
+*.dmg
+*.ipa
+*.apk
+*.aab
