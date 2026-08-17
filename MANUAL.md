@@ -48,9 +48,11 @@ Example: CCR SP0.7 from 0-40 feet/ 0-12 meters and SW to OC after; same on retur
 ### Deco gases
 
 Turn **Deco gases** on and list the mixes, e.g. `50, 100`. The planner picks the
-richest one allowed by **Max PO2** and **Max END** at each stop, and marks the
-change with a **GasSw** row. Switch depths are snapped to whole stop increments,
-so a gas whose limit falls at 21.6 m switches at 21 m.
+richest one allowed by **Max PO2** and **Max END** at each stop. The new mix
+appears in the gas column of the stop you change on to it at; where the switch
+depth is not a stop, a **GasSw** row marks it instead. Switch depths are
+snapped to whole stop increments, so a gas whose limit falls at 21.6 m switches
+at 21 m.
 
 A closed-circuit dive may leave the loop for an open-circuit deco mix and later
 return to a deco setpoint. This is intended — US Navy practice permits shifting

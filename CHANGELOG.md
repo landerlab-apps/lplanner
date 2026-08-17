@@ -62,6 +62,27 @@ inert when VPM-B is selected, and VPM-B uses its own conservatism instead.
 
 Stops and run times are whole minutes, as in Baker's output.
 
+### A VPM-B stop time was printed too long
+
+Ascent legs shorter than a minute and a half are normally absorbed into the
+stop that follows them, which is how MultiDeco presents a schedule. VPM-B
+already does that absorbing itself: Baker rounds the run time up on arrival, so
+the travel is inside the stop before the hold even begins. Doing it a second
+time in the report counted the leg twice, and a whole minute at 48 m printed as
+`1:49`.
+
+The stop was always the right length — the engine, the total deco time, the CNS
+and the OTU figures were all correct, and only the one printed field was wrong.
+VPM-B ascent legs now get their own `↑` row and the stop shows its own time.
+
+### Where the gas switch appears
+
+The manual said a **GasSw** row marks every switch. It does not. A GasSw row is
+printed when the diver changes gas at a depth he is passing through; when the
+switch depth is also a stop — the usual case, since switch depths snap to the
+stop grid — the new mix is printed in the gas column of that stop. Text only;
+nothing in the output changed.
+
 ### Gas density is now flagged
 
 Every plan reports the density of the bottom gas; now it also warns. Following
