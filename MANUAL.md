@@ -297,6 +297,35 @@ same result.
 
 ---
 
+## Gas density
+
+Every plan reports the density of the bottom gas at the deepest point, and warns
+when it is high.
+
+Density is computed as ambient pressure in atmospheres times the mixture's molar
+mass divided by 22.414 — the ideal gas at 0 °C referenced to one atmosphere,
+which is the convention the published limits were derived under. It reproduces
+their anchor points: air at 30 m comes out 5.1 g/L, and at 39 m 6.3 g/L.
+
+Following **Anthony & Mitchell**:
+
+- **Under 5.2 g/L** — ideal. No advisory.
+- **5.2 to 6.2 g/L** — above ideal, below the limit. The plan says so.
+- **Over 6.2 g/L** — the plan warns. Work of breathing and carbon dioxide
+  retention rise steeply beyond this, and CO2 retention is itself a risk factor
+  for both oxygen toxicity and inert gas narcosis.
+
+On air that puts the ideal limit at about 30 m and the hard limit near 39 m,
+which is where the usual advice comes from. It bites on trimix too: **18/45 at
+70 m is 6.4 g/L, over the limit** — 18/50 brings it to 5.9 and 15/55 to 5.5.
+Helium is not only there to keep you clear-headed.
+
+Other planners may report a lower figure for the same gas by computing at room
+or body temperature rather than at 0 °C. The number here is the one the 5.2 and
+6.2 limits were written against.
+
+---
+
 ## Sharing and printing
 
 Both become available once a plan has been calculated. Print produces the plan
