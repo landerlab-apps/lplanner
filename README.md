@@ -49,7 +49,7 @@ setting. The same text is in the app under **Info**.
 ## Reporting a problem
 
 Open an [issue](../../issues) and quote the version line at the bottom of the
-app's Info panel — it reads like `1.1 (7) · engine 1.10.0`. The first part
+app's Info panel — it reads like `1.5.0 (2) · engine 1.12.0`. The first part
 identifies the build, the last identifies the decompression engine, and a report
 is hard to act on without both.
 

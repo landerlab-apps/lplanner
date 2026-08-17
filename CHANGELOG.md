@@ -15,18 +15,6 @@ bug report. The app version tracks the interface around it.
 
 ## Engine 1.12.0 — apps 1.5.0
 
-> ### Read this first
->
-> **The VVAL-79 model produces different schedules in this version.** Closed
-> circuit is materially longer — a 45 m / 25 min dive at setpoint 1.20 goes from
-> 12 to 17 minutes of decompression. Trimix is shorter, and now carries a
-> warning. Plans you saved with an earlier version are not comparable with plans
-> from this one. If you have an old printout, re-run it.
->
-> **Bühlmann ZHL-16B / ZHL-16C is unchanged.** Verified byte-identical.
-
----
-
 ## The decompression model
 
 The VVAL-79 implementation was reviewed line by line against the U.S. Navy
