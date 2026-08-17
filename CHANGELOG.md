@@ -7,13 +7,13 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.18.0** |
+| **Decompression engine** | **1.19.0** |
 | macOS / iPhone / iPad app | 1.6.0 |
 | Android app | 1.5.1 |
 
 ---
 
-## Engine 1.18.0 — macOS / iPhone / iPad 1.6.0
+## Engine 1.19.0 — macOS / iPhone / iPad 1.6.0
 
 **ZHL-16C and VVAL-18 schedules are unchanged from engine 1.12.0.** Verified by
 building both versions and diffing their output across air, nitrox and trimix
@@ -61,6 +61,24 @@ Gradient factors and the Conservatism percentage apply to ZHL-16C only; both go
 inert when VPM-B is selected, and VPM-B uses its own conservatism instead.
 
 Stops and run times are whole minutes, as in Baker's output.
+
+### Gas density is now flagged
+
+Every plan reports the density of the bottom gas; now it also warns. Following
+Anthony & Mitchell: under 5.2 g/L nothing is said, between 5.2 and 6.2 the plan
+notes the gas is above ideal, and above 6.2 g/L it warns and says to add helium.
+Work of breathing and carbon dioxide retention rise steeply past that point, and
+CO2 retention is itself a risk factor for oxygen toxicity and narcosis.
+
+The figure itself has not changed. It is ambient pressure in atmospheres times
+molar mass over 22.414 — the convention those limits were derived under, which
+puts air at 30 m on 5.1 g/L and at 39 m on 6.3 g/L.
+
+Worth knowing: **18/45 at 70 m is 6.4 g/L and trips the limit.** 18/50 brings it
+to 5.9. Some planners report a lower number for the same gas by computing at
+room temperature rather than at 0 °C.
+
+Advisory only. No schedule changes, for any model.
 
 ### The VVAL-18 trimix warning was wrong
 
