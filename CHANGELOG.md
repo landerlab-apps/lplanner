@@ -1,6 +1,19 @@
 # Changelog
 
-## 1.5.0 — decompression engine 1.12.0
+Lplanner ships one decompression engine shared by every platform. **The engine
+version is the one printed at the top of every plan and shown in the Info
+panel** — it is what determines the schedule, so it is the number to quote in a
+bug report. The app version tracks the interface around it.
+
+| | version |
+|---|---|
+| **Decompression engine** | **1.12.0** |
+| macOS / iPhone / iPad app | 1.5.0 |
+| Android app | 1.5.0 |
+
+---
+
+## Engine 1.12.0 — apps 1.5.0
 
 > ### Read this first
 >
