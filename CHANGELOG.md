@@ -7,9 +7,92 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.12.0** |
-| macOS / iPhone / iPad app | 1.5.0 |
-| Android app | 1.5.0 |
+| **Decompression engine** | **1.18.0** |
+| macOS / iPhone / iPad app | 1.6.0 |
+| Android app | 1.5.1 |
+
+---
+
+## Engine 1.18.0 — macOS / iPhone / iPad 1.6.0
+
+**ZHL-16C and VVAL-18 schedules are unchanged from engine 1.12.0.** Verified by
+building both versions and diffing their output across air, nitrox and trimix
+profiles from 18 to 90 metres. Everything below is either new or applies to
+VPM-B alone.
+
+### VPM-B
+
+The Varying Permeability Model of Yount and Hoffman, in the implementation Erik
+Baker released to the diving community, is now a third model alongside ZHL-16C
+and VVAL-18.
+
+Where Bühlmann and Thalmann limit the gas tension dissolved in tissue, VPM-B
+tracks bubble nuclei and constrains the ascent so the volume of gas released
+from them stays under a critical limit. Nuclei are crushed on descent,
+regenerate slowly afterwards, and the gradient each one tolerates shrinks as the
+diver ascends and the bubble expands under Boyle's law.
+
+What a diver notices is where decompression starts. On 80 m for 27 minutes with
+15/45, VPM-B holds its first stop at 51 m against ZHL-16C's 30 m.
+
+**Validation.** On Baker's own 80 msw benchmark this implementation reproduces
+his published schedule stop for stop — eighteen stops, every stop time, every
+run time, and the same start of the decompression zone. Two differences are
+deliberate and documented rather than hidden:
+
+- The critical volume loop is iterated to convergence, which is what Baker's
+  written rule specifies. His compiled 2003 program stops one iteration earlier.
+  On the benchmark that is a two-minute difference.
+- The first stop is placed by this engine's ascent rule rather than Baker's,
+  which can put it one stop increment shallower.
+
+**Settings.** VPM-B inherits everything else you already set — stop grid, last
+stop depth, Pyle stops, extra-slow ascent, extended stops on a gas switch, deco
+gas selection by Max PO2 and Max END, CCR setpoints, CNS and OTU, and tissue
+loading carried between dives. It adds:
+
+- **Conservatism 0–4**, which scales both critical radii. Level 0 is Baker's
+  nominal VPM-B.
+- **Radius N2 / Radius He**, the initial critical radii in microns, 0.6 and 0.5
+  by default. These are what actually differ between implementations. Changing
+  them leaves the validated envelope.
+
+Gradient factors and the Conservatism percentage apply to ZHL-16C only; both go
+inert when VPM-B is selected, and VPM-B uses its own conservatism instead.
+
+Stops and run times are whole minutes, as in Baker's output.
+
+### The VVAL-18 trimix warning was wrong
+
+It read: *"Trimix schedules from this model are shorter than VPM-B and Bühlmann
+give."*
+
+That was true when it was written at engine 1.12.0. The helium work in 1.14.0
+and 1.15.0 made it false, and it was left standing. With VPM-B now in the engine
+it can be measured directly instead of compared against another planner, and
+VVAL-18 trimix comes out **longer** than VPM-B on every profile tested, 45 to
+90 metres:
+
+| dive | VVAL-18 | ZHL-16C raw | ZHL-16C 30/85 | VPM-B |
+|---|---:|---:|---:|---:|
+| 45 m / 25 min 21/35 | 26 | 15 | 25 | 19 |
+| 55 m / 25 min 18/45 | 50 | 29 | 47 | 36 |
+| 70 m / 26 min 18/45 | 85 | 50 | 83 | 64 |
+| 80 m / 27 min 15/45 | 121 | 78 | 131 | 103 |
+| 90 m / 20 min 13/55 | 130 | 81 | 145 | 117 |
+
+The caution still stands, for a better reason. Total time was never the problem
+— the shape is. VVAL-18 has neither gradient factors nor a bubble term, so
+nothing pulls its first stop deep on helium:
+
+| dive | VVAL-18 | ZHL-16C 30/85 | VPM-B |
+|---|---:|---:|---:|
+| 70 m / 26 min 18/45 | 27 m | 39 m | 39 m |
+| 80 m / 27 min 15/45 | 33 m | 48 m | 51 m |
+| 90 m / 20 min 13/55 | 39 m | 54 m | 60 m |
+
+It runs longer than VPM-B while starting eighteen metres shallower. The warning
+now says that instead.
 
 ---
 
@@ -95,6 +178,8 @@ edited 1939 table, not model-derived, and NEDU's replacement work used a
 different model entirely. The helium handling here is this project's own
 extrapolation with nothing to validate it against, and it produces schedules
 about 22% shorter than VPM-B on the same dive.
+(Superseded at engine 1.18.0 — see above. Later helium work reversed this, and
+VVAL-18 trimix now runs longer than VPM-B, not shorter.)
 
 Every trimix plan on VVAL-79 now says so and points at ZHL-16C with gradient
 factors, which reproduces MultiDeco VPM-B/E +2 to within three minutes.

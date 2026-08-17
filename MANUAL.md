@@ -8,8 +8,8 @@ A mixed-gas decompression planner for macOS and Android.
 
 **This generated dive schedule could indirectly kill you and probably has bugs.
 The author does not warrant that it accurately reflects A. A. Bühlmann's
-algorithm or the VVAL-18 algorithm. This dive schedule is experimental, and you
-use it at your own risk.**
+algorithm, the VVAL-18 algorithm, or the VPM-B algorithm. This dive schedule is
+experimental, and you use it at your own risk.**
 
 Decompression is not a solved problem. No model predicts it reliably for every
 diver on every day. Cross-check anything you intend to dive against tables or a
@@ -142,11 +142,36 @@ controls whether oxygen counts as narcotic when calculating equivalent narcotic
 depths (ENDs).
 
 ### Model
-**ZHL16-C** is the Bühlmann set used here. **VVAL-18** is the U.S. Navy Thalmann
-EL-DCM (exponential uptake, linear elimination); gradient factors and
-Conservatism do not apply to it. With gradient factors enabled, Pyle deep stops
-are disabled — GF Low provides the deep-stop function — and Conservatism is
-ignored.
+Three models ship, and the picker chooses between them.
+
+**ZHL16-C** is the Bühlmann set used here, optionally with gradient factors.
+
+**VVAL-18** is the U.S. Navy Thalmann EL-DCM (exponential uptake, linear
+elimination).
+
+**VPM-B** is the Yount/Hoffman varying permeability model in Erik Baker's
+implementation. It limits the volume of gas released from bubble nuclei rather
+than the tension dissolved in tissue, which is why it begins decompression much
+deeper — most visibly on helium mixes.
+
+Gradient factors and Conservatism apply to **ZHL16-C only**. VVAL-18 has
+neither. VPM-B has its own conservatism ladder, described below, and ignores the
+Conservatism slider. With gradient factors enabled, Pyle deep stops are disabled
+— GF Low provides the deep-stop function — and Conservatism is ignored.
+
+### VPM-B
+Shown only when VPM-B is the selected model.
+
+**Conservatism** runs 0 to 4 and scales both critical radii. A larger nucleus is
+excited by a smaller gradient, so higher levels give more decompression. Level 0
+is Baker's nominal VPM-B and is the setting that reproduces his published
+reference schedule.
+
+**Radius N2** and **Radius He** are the initial critical radii in microns. These
+are the parameter that actually differs between implementations — Baker ships
+0.6 and 0.5, Subsurface 0.55 and 0.45. Changing them takes you outside the
+validated envelope. Leave them alone unless you are deliberately comparing
+against another planner.
 
 ### Alternative gradient factors
 A second GF pair, used instead of the main pair whenever **altGF** is turned on
@@ -233,6 +258,35 @@ pressure, with water vapour taken as 0.0627 bar (Bühlmann's value, Rq = 1.0).
 exponential uptake, linear elimination. Gradient factors and conservatism do not
 apply to it, by design. The no-stop limits are checked against the U.S. Navy
 Diving Manual Revision 7.
+
+*On trimix, use something else.* VVAL-18 is a nitrogen model. The U.S. Navy
+publishes no helium parameters for it, and the helium handling here is this
+project's own extrapolation with nothing to validate it against. It has neither
+gradient factors nor a bubble term, so nothing pulls its first stop deep on a
+helium mix: on 80 m for 27 minutes with 15/45 it first stops at 33 m where VPM-B
+stops at 51 m, while running *longer* overall. A long schedule weighted to the
+shallow stops is the combination bubble models exist to avoid. Every trimix plan
+on VVAL-18 says so.
+
+**VPM-B** — the varying permeability model of Yount and Hoffman, in the
+implementation Erik Baker released to the diving community. Where Bühlmann and
+Thalmann limit dissolved gas tension, VPM-B tracks bubble nuclei: the ascent is
+constrained so that the volume of gas released from them stays under a critical
+limit. Nuclei are crushed on descent, regenerate slowly, and the gradient each
+one tolerates shrinks as the diver ascends and the bubble expands under Boyle's
+law.
+
+The consequence a diver notices is where decompression starts. On 80 m for 27
+minutes with 15/45, VPM-B's first stop is 51 m against ZHL16-C's 30 m.
+
+This implementation is validated against Baker's own published output: on his
+80 msw benchmark it reproduces the schedule stop for stop. Two details differ
+deliberately and are documented rather than hidden. The critical volume loop is
+iterated to convergence, as Baker's written rule specifies, which gives about
+two minutes less than his compiled 2003 program on that dive. And the first stop
+is placed by this engine's ascent rule rather than Baker's, which can put it one
+stop increment shallower. Cross-check against a planner you trust before diving
+it.
 
 **Closed circuit.** With the setpoint held, the inspired inert pressure is the
 alveolar pressure less the setpoint, divided between nitrogen and helium in the

@@ -5,6 +5,7 @@ decompression engine shared by all of them.
 
     Bühlmann ZHL-16B / ZHL-16C with gradient factors
     Thalmann EL-DCM (VVAL-18), the U.S. Navy exponential-linear model
+    VPM-B (Yount/Hoffman varying permeability, Baker's implementation)
     Open circuit, surface supplied, and closed circuit with setpoint switching
     Trimix, deco gas selection by Max PO2 and Max END, Pyle deep stops
     CNS, OTU, EAD, END, gas density, gas consumption, time to fly
@@ -16,8 +17,8 @@ decompression engine shared by all of them.
 
 **This generated dive schedule could indirectly kill you and probably has bugs.
 The author does not warrant that it accurately reflects A. A. Bühlmann's
-algorithm or the VVAL-18 algorithm. This dive schedule is experimental, and you
-use it at your own risk.**
+algorithm, the VVAL-18 algorithm, or the VPM-B algorithm. This dive schedule is
+experimental, and you use it at your own risk.**
 
 Cross-check anything you intend to dive against tables or a planner you already
 trust. The same disclaimer appears in the app's Info panel.
@@ -36,9 +37,11 @@ Installation is not a plain double-click; follow
 
 ## What changed
 
-**[CHANGELOG.md](CHANGELOG.md)** — engine 1.12.0 changes the VVAL-79 schedules. Closed
-circuit is materially longer, trimix is shorter and now warns. Bühlmann is
-unchanged. Worth reading before you dive a plan from this version.
+**[CHANGELOG.md](CHANGELOG.md)** — engine 1.18.0 adds **VPM-B** as a third
+model, validated against Erik Baker's own published output. ZHL-16C and VVAL-18
+schedules are unchanged from the previous version. The trimix warning on
+VVAL-18 has been corrected — it was saying the opposite of what the model now
+does. Worth reading before you dive a plan from this version.
 
 ## Manual
 
@@ -49,7 +52,7 @@ setting. The same text is in the app under **Info**.
 ## Reporting a problem
 
 Open an [issue](../../issues) and quote the version line at the bottom of the
-app's Info panel — it reads like `1.5.0 (2) · engine 1.12.0`. The first part
+app's Info panel — it reads like `1.6.0 (1) · engine 1.18.0`. The first part
 identifies the build, the last identifies the decompression engine, and a report
 is hard to act on without both.
 
@@ -62,7 +65,12 @@ The closed-circuit inspired-gas calculation has been compared line by line
 against [Subsurface](https://github.com/subsurface/subsurface) and
 [Abysner](https://github.com/NeoTech-Software/Abysner) — all three compute the
 same result. VVAL-18 no-stop limits are checked against the U.S. Navy Diving
-Manual Revision 7. See the *Models* section of the manual.
+Manual Revision 7.
+
+VPM-B is validated against Erik Baker's own reference output: on his 80 msw
+trimix benchmark it reproduces the published schedule stop for stop — eighteen
+stops, every stop time, every run time. Two deliberate differences are
+documented in the manual rather than hidden. See the *Models* section.
 
 ---
 
