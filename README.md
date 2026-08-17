@@ -34,6 +34,12 @@ Installation is not a plain double-click; follow
 
 **iPhone and iPad** — not currently distributed.
 
+## What changed
+
+**[CHANGELOG.md](CHANGELOG.md)** — 1.5.0 changes the VVAL-79 schedules. Closed
+circuit is materially longer, trimix is shorter and now warns. Bühlmann is
+unchanged. Worth reading before you dive a plan from this version.
+
 ## Manual
 
 **[MANUAL.md](MANUAL.md)** covers entering a dive, reading the schedule, closed
