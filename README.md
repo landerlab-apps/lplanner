@@ -60,4 +60,4 @@ Manual Revision 7. See the *Models* section of the manual.
 
 ---
 
-Copyright © 2026 Carlos Lander. All rights reserved. See [NOTICE](NOTICE).
+2026 Carlos Lander. See [NOTICE](NOTICE).
