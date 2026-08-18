@@ -37,11 +37,15 @@ Installation is not a plain double-click; follow
 
 ## What changed
 
-**[CHANGELOG.md](CHANGELOG.md)** — engine 1.19.0 adds **VPM-B** as a third
-model, validated against Erik Baker's own published output. ZHL-16C and VVAL-18
-schedules are unchanged from the previous version. The trimix warning on
-VVAL-18 has been corrected — it was saying the opposite of what the model now
-does. Worth reading before you dive a plan from this version.
+**[CHANGELOG.md](CHANGELOG.md)** — engine 1.19.0 added **VPM-B** as a third
+model, validated against Erik Baker's own published output, and corrected the
+trimix warning on VVAL-18, which was saying the opposite of what the model now
+does. Engine 1.20.0 fixes **Deco zone start**, which was never computed at all
+— it reported the first stop under another name, so the two always matched.
+Android 1.6.0 brings VPM-B to the phone, adds **Print**, and moves the plan
+warnings into Info. No schedule changed on any model in 1.20.0.
+
+Worth reading before you dive a plan from this version.
 
 ## Manual
 
@@ -52,7 +56,7 @@ setting. The same text is in the app under **Info**.
 ## Reporting a problem
 
 Open an [issue](../../issues) and quote the version line at the bottom of the
-app's Info panel — it reads like `1.6.0 (1) · engine 1.19.0`. The first part
+app's Info panel — it reads like `1.6.0 (1) · engine 1.20.0`. The first part
 identifies the build, the last identifies the decompression engine, and a report
 is hard to act on without both.
 

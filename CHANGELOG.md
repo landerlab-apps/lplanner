@@ -7,9 +7,126 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.19.0** |
+| **Decompression engine** | **1.20.0** |
 | macOS / iPhone / iPad app | 1.6.0 |
 | Android app | 1.6.0 |
+
+---
+
+## Engine 1.20.0
+
+### The start of the decompression zone was never computed
+
+The plan prints **Deco zone start** under the table. It was wrong, and wrong in
+a way that hid itself: the figure was taken from the first stop that carried
+any time, so it always equalled the first stop. On 70 m / 30 min with 18/45 on
+VPM-B +2 it read 48 m because the first stop was 48 m. The number confirmed
+itself and told you nothing.
+
+The first stop must lie **above** the start of the decompression zone. Reading
+the two as the same depth is the symptom that prompted this.
+
+It is now measured during the ascent, as the depth at which the leading
+compartment's total inert gas tension first reaches ambient pressure. Shallower
+than that the diver is supersaturated and a bubble can grow; deeper than it he
+is not. The first stop is necessarily above it.
+
+A word on the criterion, because the obvious reading gives the wrong answer.
+Off-gassing in the plain sense begins almost the moment the diver leaves the
+bottom — the inspired inert pressure falls with him, so tissue tension exceeds
+it immediately. That depth is nearly the bottom itself and is not what the term
+means. The crossover worth naming is tension against **ambient** pressure,
+which is what Baker's `CALC_START_OF_DECO_ZONE` computes, metabolic gases
+included. The same test was already in the engine driving VPM-B's phase volume
+time; it now serves every model.
+
+Checked against Baker's own output rather than against itself. On his 80 msw
+15/45 benchmark the engine gives 64.6 m where `VPM.OUT` prints 64.8 mswg; the
+0.2 m is the fresh-water conversion and the integration interval.
+
+| model | zone start | first stop |
+|---|---:|---:|
+| ZHL-16C | 54.8 m | 24 m |
+| VVAL-18 | 54.8 m | 30 m |
+| VPM-B +0 | 54.8 m | 48 m |
+| VPM-B +2 | 54.8 m | 48 m |
+| VPM-B +4 | 54.8 m | 48 m |
+
+The zone start is the same for all three, which is correct — it is a property
+of the tissues and the ascent, not of the stop rules.
+
+Re-measured on every pass of VPM-B's critical volume loop, which ascends more
+than once with different tissue loadings. A value carried over from the first
+pass would describe a schedule you are not being given.
+
+**Display only. No schedule changed on any model.** ZHL-16C and VVAL-18 verified
+unchanged across 8 profiles.
+
+---
+
+## Android 1.6.0
+
+Brings Android level with macOS and iOS, plus three changes that apply to the
+phone alone.
+
+### VPM-B
+
+The model picker gains a third segment, with the conservatism slider and the
+critical radii shown only when VPM-B is selected — as on the other platforms.
+Gradient factors and the Conservatism percentage now correctly go inert when
+VPM-B is chosen; the guard that disabled them tested for "not VVAL-18", which
+would have silently applied gradient factors to VPM-B.
+
+### Warnings moved out of the table and into Info
+
+On a phone the warning block ran to several wrapped lines beneath a schedule
+already short of height. The table now ends at the gas consumption figures and
+the warnings are set out permanently under **WARNINGS** in Info.
+
+macOS, iPhone and iPad still print them under the table. The trade is
+deliberate and worth stating: the Info text is standing rather than computed,
+so it gives the 5.2 and 6.2 g/L thresholds instead of the density of the gas
+you just planned. Read it once.
+
+The section was rewritten against Ross Hemingway's *Some common practices,
+myths and mistakes on decompression* (decompression.org) rather than from
+memory. Four items are new, and two concern settings Lplanner itself exposes:
+
+- **Last stop at 6 m** is only sound on 100% oxygen, the one gas delivering
+  zero inspired inert pressure at any depth. On 50% or leaner the inspired
+  inert pressure must keep falling to drive off-gassing, so the stepped ascent
+  through 4.5 and 3 m still has to be made. Config will let you set 6 m with
+  any gas and say nothing.
+- **Ascent rate** — the average technical diver manages about 5 m/min against
+  a planned 10, and a table computed at 10 is wrong for him. The slow final
+  ascent is the exception: the planner ignores it, so it is extra
+  decompression rather than skipped decompression.
+- **Trimix deco gas** — a 50/50 schedule comes out longer and divers assume a
+  fault. It is not. Helium in the deco mix slows helium off-gassing; what
+  50/50 buys is nitrogen removed earlier.
+- **Extended stops** — not in the deepest part of the ascent, where ambient
+  pressure still loads you.
+
+The isobaric counterdiffusion note was too vague to act on and now gives the
+mechanism: the switch onto EAN50 returns inspired nitrogen to roughly where it
+was several stops deeper, halting nitrogen off-gassing while helium leaves
+quickly. That is the accepted trade, not a fault.
+
+### Print
+
+Print had never existed on Android. A comment in the top bar referred to it as
+though it did, which is how it came to be reported missing.
+
+The schedule is a monospace table whose columns only align because every glyph
+is the same width, so it is set at 9 pt — the largest size that keeps 54
+columns inside a portrait margin without reflowing. It reaches a printer or
+Save as PDF.
+
+Share, Print and Info have lost their captions. The words were wider than the
+icons they labelled, and on a 360 dp screen that width was the difference
+between Print fitting in the bar and not. All three keep their accessibility
+labels. Share and Print dim to 40% when there is no plan rather than
+disappearing, so the bar never changes shape.
 
 ---
 

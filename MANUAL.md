@@ -91,8 +91,20 @@ Below the table: the depth at which the deco zone begins, bottom gas density,
 total deco time, total run time, CNS and OTU totals, gas consumption per mix,
 and time to fly.
 
+**Deco zone start** is the depth at which the leading compartment's inert gas
+tension first reaches ambient pressure on the way up. Shallower than it you are
+supersaturated and a bubble can grow; deeper than it you are not. Your first
+stop is always above this depth — if it ever reads equal to the first stop, the
+figure is wrong and worth reporting.
+
+It is not the depth at which off-gassing begins. That happens almost as soon as
+you leave the bottom, because the inspired inert pressure falls with you, and
+it is nearly the bottom itself.
+
 Short ascents between stops with no gas change are folded into the following
-stop's time, so the schedule reads the way you would dive it.
+stop's time, so the schedule reads the way you would dive it. VPM-B is the
+exception: it absorbs the travel leg itself by rounding the run time up on
+arrival, so its ascents get their own row.
 
 ### Full screen
 
