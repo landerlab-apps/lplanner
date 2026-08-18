@@ -83,6 +83,19 @@ switch depth is also a stop — the usual case, since switch depths snap to the
 stop grid — the new mix is printed in the gas column of that stop. Text only;
 nothing in the output changed.
 
+### Android: warnings moved out of the table
+
+On a phone the warning block ran to several wrapped lines under a schedule that
+is already short of height, so on **Android only** the plan table now ends at
+the gas consumption figures and the warnings are set out permanently under
+**WARNINGS** in Info — gas density, isobaric counterdiffusion, VVAL-18 on
+trimix, and oxygen exposure.
+
+macOS, iPhone and iPad still print the warnings under the table. The trade is
+deliberate: the Info text is standing rather than computed, so it states the
+5.2 and 6.2 g/L thresholds instead of the density of the gas you just planned.
+Read it once. Nothing in the schedule changed on any platform.
+
 ### Gas density is now flagged
 
 Every plan reports the density of the bottom gas; now it also warns. Following
