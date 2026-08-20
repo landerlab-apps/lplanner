@@ -53,6 +53,13 @@ Worth reading before you dive a plan from this version.
 circuit, deco gases, surface intervals and residual gas, and every Config
 setting. The same text is in the app under **Info**.
 
+## Privacy
+
+**[PRIVACY.md](PRIVACY.md)** — Lplanner declares no Android permissions at all,
+including no internet permission, so it cannot transmit anything. Your dive,
+your settings and your saved plans stay in the app's private storage on the
+device.
+
 ## Reporting a problem
 
 Open an [issue](../../issues) and quote the version line at the bottom of the
