@@ -39,13 +39,17 @@ Installation is not a plain double-click; follow
 
 **[CHANGELOG.md](CHANGELOG.md)** — engine 1.19.0 added **VPM-B** as a third
 model, validated against Erik Baker's own published output, and corrected the
-trimix warning on VVAL-18, which was saying the opposite of what the model now
-does. Engine 1.20.0 fixes **Deco zone start**, which was never computed at all
-— it reported the first stop under another name, so the two always matched.
-Android 1.6.0 brings VPM-B to the phone, adds **Print**, and moves the plan
-warnings into Info. No schedule changed on any model in 1.20.0.
+trimix warning on VVAL-18. Engine 1.20.0 fixed **Deco zone start**, which was
+never computed at all — it reported the first stop under another name.
 
-Worth reading before you dive a plan from this version.
+**Engine 1.21.0 fixes altitude diving, and if you dive at altitude you should
+read it before trusting an older plan.** The engine had assumed every altitude
+diver was already equilibrated to the mountain; a diver who drove up that
+morning was getting less than half the decompression he needed. Config now
+asks, and the default is the conservative answer. Verified against the U.S.
+Navy Diving Manual rev 7, chapter 9.
+
+Sea-level schedules are unchanged throughout.
 
 ## Manual
 
@@ -63,7 +67,7 @@ device.
 ## Reporting a problem
 
 Open an [issue](../../issues) and quote the version line at the bottom of the
-app's Info panel — it reads like `1.6.0 (1) · engine 1.20.0`. The first part
+app's Info panel — it reads like `1.6.0 (1) · engine 1.21.0`. The first part
 identifies the build, the last identifies the decompression engine, and a report
 is hard to act on without both.
 

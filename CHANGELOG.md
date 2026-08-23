@@ -7,9 +7,108 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.20.0** |
+| **Decompression engine** | **1.21.0** |
 | macOS / iPhone / iPad app | 1.6.0 |
 | Android app | 1.6.0 |
+| Android app (F-Droid) | 1.6.0 |
+
+---
+
+## Engine 1.21.0
+
+### Altitude: the engine assumed you lived on the mountain
+
+**If you dive at altitude, read this before using an older plan.**
+
+The engine started every dive with your tissues already equilibrated to the
+dive site's pressure. That silently assumed you had been living at that
+altitude long enough to off-gas your sea-level nitrogen. For anyone who drives
+up to a mountain lake in the morning it was the least conservative assumption
+available, and nothing on the plan said so.
+
+| | engine said | actually required |
+|---|---:|---:|
+| 3000 m, 30 m / 25 min, air | 8.6 min | **18.6 min** |
+| 4000 m, 40 m / 20 min, air | 24.6 min | **44.6 min** |
+
+A diver who arrived that morning was being given less than half his
+decompression, on a schedule that looked exactly as authoritative as any other.
+
+Config now asks. Above sea level only — at 0 m the question has no meaning:
+
+- **Diver equilibrated at this altitude** — you have been up there long enough
+  for your tissues to have adjusted.
+- **Hours at altitude** — how long since you arrived. `0`, meaning you have
+  just driven up, is the **default**, because it is both the common case and
+  the conservative one.
+
+The tissues wash out from sea level toward the altitude equilibrium at their
+own individual rates, so an hours figure means something real rather than
+being a switch in disguise.
+
+The plan header states which assumption produced the schedule —
+`Altitude 3000m, diver just arrived` — because it changes the answer by more
+than most Config settings do.
+
+**Sea level is completely unaffected.** ZHL-16C and VVAL-18 verified unchanged
+across the full profile set.
+
+### Equilibration, not acclimatisation
+
+The U.S. Navy Diving Manual (rev 7, §9-13.4) separates two things this project
+had merged:
+
+> The body off-gases excess nitrogen to come into equilibrium with the lower
+> partial pressure of nitrogen... The first process is called equilibration;
+> the second is called acclimatization. Approximately twelve hours at altitude
+> is required for equilibration.
+
+Lplanner models the nitrogen and **nothing at all** of the adjustment to lower
+oxygen. Calling the setting "acclimatised" named the wrong process and could
+have suggested the planner accounted for altitude adaptation. It says
+*equilibrated* now, with the Navy's twelve-hour figure where you will read it.
+
+The same section is also the authority for the fix above: a diver diving
+within twelve hours of arrival must account for his residual sea-level
+nitrogen, and the Navy does it by treating the ascent to altitude as a
+repetitive dive.
+
+One caveat their figure does not carry over. Twelve hours is right for the
+Navy's tables, which are led by a 120-minute compartment — 1.6 % of the excess
+left. Bühlmann's set runs to 635 minutes, which still holds **46 %** at twelve
+hours. It rarely shows on a single dive, because the compartments that lead a
+30–40 m dive are done long before. It does show on a second day. If you
+arrived yesterday, enter the hours rather than ticking the box.
+
+### Checked against the Navy's own tables
+
+The altitude arithmetic was verified against U.S. Navy Diving Manual rev 7,
+chapter 9, rather than against itself:
+
+- **Atmospheric pressure** matches Table 2-19 to within **0.05 %** at every
+  altitude from 1,000 to 10,000 ft.
+- **Sea level equivalent depth** reproduces **45 of 50** sampled cells of Table
+  9-4 exactly. All five disagreements sit in the 1,000 ft column, where the
+  Navy leaves shallow depths uncorrected and the ratio rounds up one table step
+  — deeper, the safe direction.
+- **Equivalent stop depths** reproduce **59 of 60** cells of the Table 9-4
+  footer. The one miss lands on exactly 46.5 and is a rounding tie.
+
+Note this does not make Lplanner a Cross Correction planner, and it should not
+be one. Cross Correction exists so a fixed printed table can be read at
+altitude. Lplanner evaluates the model at the pressure that actually obtains,
+as Bühlmann and VPM-B do. What the checks confirm is the physics under both.
+
+### DAN recommendations in Info
+
+A standing section covering flying after diving, altitude after diving, diving
+at altitude, thermal stress and ascent rate.
+
+It says plainly that the **Time to Fly** figure on the plan is the model's own
+arithmetic — the hours until your tissues tolerate a 10,000 ft cabin — and is
+usually far shorter than DAN's guidance, which runs from 12 hours after a
+single no-stop dive to 24 hours or more after decompression diving. The plan
+prints only one of those two numbers. Take the longer.
 
 ---
 

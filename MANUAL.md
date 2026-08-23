@@ -200,9 +200,32 @@ still allowed. GF High is the standard behavior for ZHL16-C. GF Low is stricter
 and ends the no-decompression phase earlier.
 
 ### Conditions
-Altitude of the dive site (0 for sea level; be extra conservative if you are
-still off-gassing from travel to altitude). **Conservatism** applies only when
-gradient factors are switched off. It (0–50 %) preloads the tissue compartments
+**Altitude** of the dive site, 0 for sea level. Above sea level the air is
+thinner, so the same dive carries more decompression.
+
+Two further settings appear once altitude is above zero, and they matter more
+than most:
+
+**Diver equilibrated at this altitude** — your tissues have off-gassed their
+excess nitrogen to match the thinner air. The U.S. Navy Diving Manual puts that
+at about twelve hours at altitude.
+
+**Hours at altitude** — how long since you arrived, for the case in between.
+`0` means you have just driven up and are still carrying your sea-level
+nitrogen, and it is the default. The tissues wash out toward the altitude
+equilibrium at their own individual rates, so the slow ones are still loaded
+well after the fast ones have finished.
+
+State this honestly. At 3000 m the difference between "just arrived" and
+"equilibrated" can double the decompression, and the plan header records which
+answer produced your schedule.
+
+Note this is *equilibration*, not *acclimatisation*. The second is the body's
+much slower adjustment to the lower oxygen, and no decompression model —
+including this one — accounts for it.
+
+**Conservatism** applies only to ZHL16-C with gradient factors switched off.
+It (0–50 %) preloads the tissue compartments
 with additional inert gas — nitrogen, and helium in proportion when the profile
 uses trimix — weighted from the fast compartments (none) to the slow ones (the
 full percentage), as if a previous dive had been made. Zero is the clean-diver
