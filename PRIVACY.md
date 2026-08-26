@@ -1,10 +1,20 @@
 # Privacy Policy — Lplanner
 
-**Last updated: 20 August 2026**
+**Last updated: 26 August 2026**
 
 Lplanner is a mixed-gas decompression planner published by Landerlab (Carlos
-Lander). This policy covers the Lplanner Android application,
-`com.landerlab.lplanner`, distributed through Google Play.
+Lander). This policy covers the Lplanner Android application in both the
+builds it is distributed as:
+
+| build | application id | store |
+|---|---|---|
+| Lplanner | `com.landerlab.lplanner` | Google Play |
+| Lplanner (F-Droid) | `com.landerlab.lplanner.fdroid` | F-Droid |
+
+The two are the same application, compiled from the same source. They carry
+different application ids only because each store signs with its own key, and
+Android will not install one over the other. Everything below applies equally
+to both.
 
 ## The short version
 
@@ -87,9 +97,16 @@ would be described in the [changelog](CHANGELOG.md).
 ## Verifying this yourself
 
 You do not have to take the above on trust. The absence of an internet
-permission is visible to anyone: on the Google Play listing under **App
-permissions → See more**, Lplanner reports no permissions. Android will also
-show you the full list under **Settings → Apps → Lplanner → Permissions**.
+permission is visible to anyone. On the Google Play listing it is under **App
+permissions → See more**; on F-Droid it is in the **Permissions** section of
+the app page. Both report none. Android will also show you the full list under
+**Settings → Apps → Lplanner → Permissions**.
+
+The F-Droid build goes further: F-Droid compiles it themselves from published
+source, so the claims in this document are checkable against the code rather
+than taken on trust. The source is at
+<https://github.com/landerlab-apps/Lplanner-FDroid>, under the GNU General
+Public License v3.
 
 ## Contact
 
