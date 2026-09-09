@@ -10,3 +10,6 @@ xcuserdata/
 *.app/
 *.zip
 *.dmg
+
+# Xcode writes these when it rewrites the project file.
+project.pbxproj.bak-*
