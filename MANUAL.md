@@ -8,7 +8,7 @@ A mixed-gas decompression planner for macOS and Android.
 
 **This generated dive schedule could indirectly kill you and probably has bugs.
 The author does not warrant that it accurately reflects A. A. Bühlmann's
-algorithm, the VVAL-18 algorithm, or the VPM-B algorithm. This dive schedule is
+algorithm, the VVAL-79 algorithm, or the VPM-B algorithm. This dive schedule is
 experimental, and you use it at your own risk.**
 
 Decompression is not a solved problem. No model predicts it reliably for every
@@ -146,6 +146,12 @@ nothing in the log affects a future calculation.
 
 ## Config
 
+Config is a plain list of controls: title, setting, divider. The explanation of
+every setting is here in the manual instead, and in the app itself under
+**Help ▸ Lplanner Manual** on the Mac or the **Info** button on Android. It was
+moved out so the sheet stays short enough to find things in and the text stays
+long enough to be worth reading.
+
 ### Units
 Depths sets the units for depth, altitude, stop distance, END, the ascent and
 descent rate tables, and the dive levels themselves. Switching converts every
@@ -166,15 +172,18 @@ Three models ship, and the picker chooses between them.
 
 **ZHL16-C** is the Bühlmann set used here, optionally with gradient factors.
 
-**VVAL-18** is the U.S. Navy Thalmann EL-DCM (exponential uptake, linear
-elimination).
+**VVAL-79** is the U.S. Navy Thalmann EL-DCM (exponential uptake, linear
+elimination) with the VVal-79 air parameter set behind the Diving Manual
+Revision 7 air tables. It plans **air, nitrox and oxygen only**: the Navy
+publishes no helium parameters for it, so a dive carrying helium is refused
+rather than computed.
 
 **VPM-B** is the Yount/Hoffman varying permeability model in Erik Baker's
 implementation. It limits the volume of gas released from bubble nuclei rather
 than the tension dissolved in tissue, which is why it begins decompression much
 deeper — most visibly on helium mixes.
 
-Gradient factors and Conservatism apply to **ZHL16-C only**. VVAL-18 has
+Gradient factors and Conservatism apply to **ZHL16-C only**. VVAL-79 has
 neither. VPM-B has its own conservatism ladder, described below, and ignores the
 Conservatism slider. With gradient factors enabled, Pyle deep stops are disabled
 — GF Low provides the deep-stop function — and Conservatism is ignored.
@@ -250,6 +259,48 @@ post-dive fatigue. Pyle stop time is the minutes spent at each generated stop
 (1–5). Not shown when gradient factors are enabled: GF Low takes over the
 deep-stop role.
 
+### Air breaks
+A break is planned when you are breathing oxygen at the last stop depth or
+shallower, or when CNS reaches the warning threshold on any rich mix. **Break
+after** is the oxygen time that earns a break, **Break for** its length.
+
+The oxygen clock is cumulative: it runs across stop changes and excludes travel,
+per NEDU TR 07-09, so "break after 30" means thirty minutes of oxygen wherever
+it was breathed. On a 70 m trimix dive finishing on oxygen at 6 m and 3 m, the
+break falls at 3 m about twelve minutes into that stop, not thirty.
+
+**Break gas** is the mix you switch to. Left blank the planner takes the leanest
+mix you carry that is still breathable at that depth, which is what keeps a
+hypoxic back gas out of a 3 m break. If nothing carried qualifies, the break is
+skipped and the plan says so.
+
+Two treatments:
+
+**Navy** — the break is gas-exchange dead time. Inert tensions freeze and the
+stop simply grows by the break length. This is how the U.S. Navy Air/O2 tables
+were generated and it is the only treatment published work validates.
+
+**Subsurface** — the break is an ordinary gas segment, integrated on the break
+gas. The stop grows by whatever the model says. Physically truer, and validated
+by nobody.
+
+CNS and OTU accrue on the break gas in both modes: dead time is about inert gas
+only. No break is planned in the last few minutes before surfacing, following
+the Navy's rule, and none is planned on closed circuit — there the answer is to
+lower the setpoint, and the plan says so once.
+
+### Travel gas
+With **travel gas** checked on the main screen, a descent on a hypoxic back gas
+starts on the leanest mix you carry that is breathable at the surface, and
+changes to the back gas at the first stop increment where the back gas is safe.
+On 10/50 that is 9 m: 0.18 bar needs 1.8 bar of ambient pressure, which is
+7.83 m, rounded up to the grid.
+
+It costs no decompression. It only moves the first few metres onto a stage, and
+the gas report splits the stage figure into travel and deco. If no mix you carry
+is breathable at the surface, the plan says so and descends on the back gas
+anyway.
+
 ### Descent and ascent rates
 One range per line: `depth1-depth2, rate`, in whatever depth units are in
 force. Descent lists shallowest first, ascent lists deepest first. Leave no
@@ -291,23 +342,22 @@ factors after Baker. Inert gas loading is computed against alveolar pressure,
 with water vapour taken as 0.0627 bar (Bühlmann's value, Rq = 1.0). ZHL-16B was
 dropped in engine 1.5.0: the two sets differ only in the b coefficients of the
 slow compartments, B being the less conservative, and carrying both invited a
-choice with no good basis. `UseBValues` is still accepted in a profile and
-ignored. Bühlmann's optional 1b compartment is off by default and available as
+choice with no good basis. The table was deleted outright in engine 1.34.0, and
+`UseBValues` is no longer a key. Bühlmann's optional 1b compartment is off by default and available as
 `Compartment1b: y`, which makes the standard sixteen match Subsurface exactly.
 
-**VVAL-18 (79) / Thalmann EL-DCM** — the U.S. Navy exponential-linear model:
+**VVAL-79 / Thalmann EL-DCM** — the U.S. Navy exponential-linear model:
 exponential uptake, linear elimination. Gradient factors and conservatism do not
-apply to it, by design. The no-stop limits are checked against the U.S. Navy
-Diving Manual Revision 7.
+apply to it, by design. It carries the published nine-compartment VVAL-79
+parameter set (NEDU TR 12-01, Table 3) and reproduces *U.S. Navy Diving Manual
+Revision 7, Table 9-7* to within one minute at sixteen of seventeen depths, six
+of them exactly.
 
-*On trimix, use something else.* VVAL-18 is a nitrogen model. The U.S. Navy
-publishes no helium parameters for it, and the helium handling here is this
-project's own extrapolation with nothing to validate it against. It has neither
-gradient factors nor a bubble term, so nothing pulls its first stop deep on a
-helium mix: on 80 m for 27 minutes with 15/45 it first stops at 33 m where VPM-B
-stops at 51 m, while running *longer* overall. A long schedule weighted to the
-shallow stops is the combination bubble models exist to avoid. Every trimix plan
-on VVAL-18 says so.
+*Air, nitrox and oxygen only.* The U.S. Navy publishes no helium parameters for
+this model. Earlier versions filled the gap with a Graham's law √(28/4) scaling;
+NEDU's own fitted helium data contradicts it, so rather than ship an invented
+number the planner now refuses a dive carrying helium and says why. For trimix
+use VPM-B, or ZHL16-C with gradient factors.
 
 **VPM-B** — the varying permeability model of Yount and Hoffman, in the
 implementation Erik Baker released to the diving community. Where Bühlmann and

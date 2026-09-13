@@ -7,10 +7,100 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.23.0** |
-| macOS / iPhone / iPad app | 1.7.0 |
+| **Decompression engine** | **1.35.0** |
+| macOS / iPhone / iPad app | 1.7.0 (3) |
 | Android app | 1.7.0 |
 | Android app (F-Droid) | 1.7.0 |
+
+---
+
+## Engine 1.35.0
+
+### Air breaks
+
+A break is planned when you are breathing oxygen at the last stop depth or
+shallower, or when CNS reaches the warning threshold on any rich mix. Config
+sets **Break after** (the oxygen time that earns a break), **Break for** (its
+length) and **Break gas**; left blank, the break gas is the leanest mix you
+carry that is still breathable at that depth, which is what keeps a hypoxic back
+gas out of a 3 m break.
+
+Two treatments. **Navy** is gas-exchange dead time: inert tensions freeze and
+the stop grows by the break length. That is how the U.S. Navy Air/O2 tables were
+generated and it is the only treatment published work validates. **Subsurface**
+runs the break as an ordinary segment on the break gas. CNS and OTU accrue on
+the break gas in both, because dead time is about inert gas only.
+
+The oxygen clock is cumulative, carried across stop changes and excluding
+travel, per NEDU TR 07-09. Subsurface mode reset it at every stop until 1.35.0,
+as Subsurface itself does, which on a 70 m trimix dive put the first break
+**49 minutes** into continuous oxygen. It now falls at 31, matching Navy mode.
+
+No break is planned inside the last few minutes before surfacing, following the
+Navy's own rule, and none on closed circuit, where the plan advises lowering the
+setpoint rather than inventing a schedule. A CNS advisory warning at 80% was
+added for both circuits.
+
+### Travel gas
+
+A descent on a hypoxic back gas now starts on the leanest mix you carry that is
+breathable at the surface, and changes to the back gas at the first stop
+increment where the back gas is safe — 9 m for 10/50. It costs no
+decompression; it only moves the first few metres onto a stage. If nothing you
+carry is breathable at the surface, the plan says so and descends on the back
+gas anyway.
+
+### VVAL-18 is now VVAL-79, and plans air and nitrox only
+
+**If you have planned trimix on VVAL-18, replan it.** The model now carries the
+published nine-compartment VVAL-79 parameter set (NEDU TR 12-01, Table 3) and
+reproduces *USN Diving Manual Rev. 7, Table 9-7* to within one minute at sixteen
+of seventeen depths, six exactly. The twelve-compartment set it replaced gave
+21 min at 120 fsw where the manual says 15.
+
+A dive carrying helium is now refused with an explanation rather than computed.
+The Graham's law √(28/4) helium scaling that stood in for the missing Navy
+parameters is gone: NEDU's own fitted helium data contradicts it, and the helium
+MPTT table it fed turned out to be a copy of the nitrogen one. XVal-He-9 was
+implemented and evaluated as a replacement, then removed — no published source
+states how two inert gases share one Thalmann compartment.
+
+ZHL-16B is gone as well, deleted rather than merely ignored; `UseBValues` is no
+longer a key.
+
+### Two defects found while auditing
+
+Model names are parsed case-insensitively. **`Model: VVAL18` used to select
+Bühlmann silently**, and an unrecognised name still falls back to Bühlmann, but
+now says so in the plan.
+
+A stop that cleared in exactly zero time printed "-0 minutes". The clamp tested
+`deco < 0`, which negative zero fails.
+
+### Config is now a list of controls
+
+Every setting's explanation moved out of Config and into the manual, where it
+can be read end to end instead of a paragraph at a time between two pickers.
+On macOS it is under **Help ▸ Lplanner Manual**, which previously answered
+"Help isn't available for Lplanner"; on iOS and Android it is under **Info**.
+
+The guide documents three things the inline text never did: the air-break
+period, length and break gas; travel gas, which is a main-screen control with no
+Config section and so had no explanation anywhere; and what deco Max PO2 1.55
+versus 1.60 actually does to a schedule.
+
+The Info panel labels the build **AI-assisted** beside the version.
+
+### Verified
+
+62 stored configurations run through 1.34.0 and 1.35.0: two differ, both
+Subsurface-mode air breaks, both only in where the break sits inside the stop.
+Totals unmoved. Sea-level ZHL-16C and VPM-B schedules are unchanged throughout
+this whole series.
+
+Cross-checked against MultiDeco and TechDeco on a 70 m trimix dive with matched
+bottom time, deco Max PO2 and ascent rate: TechDeco 164, Lplanner 160,
+MultiDeco 151 minutes of run time.
 
 ---
 
