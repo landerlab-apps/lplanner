@@ -7,10 +7,26 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.35.0** |
-| macOS / iPhone / iPad app | 1.7.0 (3) |
-| Android app | 1.7.0 |
-| Android app (F-Droid) | 1.7.0 |
+| **Decompression engine** | **1.36.0** |
+| macOS / iPhone / iPad app | 1.8.0 (3) |
+| Android app | 1.8.0 (13) |
+| Android app (F-Droid) | 1.8.0 (13) |
+
+---
+
+## Engine 1.36.0
+
+### The VVAL-79 helium refusal reads plainly
+
+The message shown when a dive carrying helium is given to VVAL-79 was rewritten:
+
+> VVAL-79 involves air and nitrox only. Since helium parameters for the
+> Thalmann algorithm are not provided by the U.S. Navy, no schedule has been
+> computed. Use VPM-B or ZHL-16C with gradient factors for trimix diving.
+
+One string in the engine, so every build says the same thing. No schedule
+changes: 62 stored configurations were run through 1.35.0 and 1.36.0 and only
+the two helium-on-VVAL-79 refusals differ, in wording alone.
 
 ---
 
