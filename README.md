@@ -4,9 +4,9 @@ A mixed-gas decompression planner for macOS, iPhone, iPad, and Android — one
 decompression engine shared by all of them.
 
     Bühlmann ZHL-16C with gradient factors
-    Thalmann EL-DCM (VVAL-18), the U.S. Navy exponential-linear model
+    Thalmann EL-DCM (VVAL-79), the U.S. Navy exponential-linear model
     VPM-B (Yount/Hoffman varying permeability, Baker's implementation)
-    Open circuit, surface supplied, and closed circuit with setpoint switching
+    Open circuit, surface-supplied, and closed circuit with setpoint switching
     Trimix, deco gas selection by Max PO2 and Max END, Pyle deep stops
     CNS, OTU, EAD, END, gas density, gas consumption, time to fly
     Tissue loading carried between dives, aging in real time.
@@ -18,7 +18,7 @@ decompression engine shared by all of them.
 **This generated dive schedule could indirectly kill you and probably has bugs.
 The author does not warrant that it accurately reflects A. A. Bühlmann's
 algorithm, the VVAL-18 algorithm, or the VPM-B algorithm. This dive schedule is
-experimental, and you use it at your own risk.**
+experimental, and you use it at your own risk. THIS is primarily an EDUCATIONAL TOOL**
 
 Cross-check anything you intend to dive against tables or a planner you already
 trust. The same disclaimer appears in the app's Info panel.
@@ -89,7 +89,7 @@ documented in the manual rather than hidden. See the *Models* section.
 
 ## Supporting the project
 
-Lplanner is free software with no adverts, no tracking and no subscription. The
+Lplanner is free software with no adverts, no tracking, and no subscription. The
 macOS and F-Droid builds show a PayPal address in the Info panel, with a
 payment link when one is configured; it is a link out to PayPal and nothing
 more — the app requests no network permission and sends nothing. The Google
