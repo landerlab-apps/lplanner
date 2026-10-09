@@ -7,10 +7,151 @@ bug report. The app version tracks the interface around it.
 
 | | version |
 |---|---|
-| **Decompression engine** | **1.36.0** |
-| macOS / iPhone / iPad app | 1.8.0 (3) |
-| Android app | 1.8.0 (13) |
-| Android app (F-Droid) | 1.8.0 (13) |
+| **Decompression engine** | **1.39.3** |
+| macOS / iPhone / iPad app | 1.9.2 (8) |
+| Android app | 1.9.2 (18) |
+| Android app (F-Droid) | 1.9.1 (17) |
+
+---
+
+## Engine 1.39.3 · apps 1.9.2
+
+### The narcotic depth column follows O2 narcotic
+
+With O2 narcotic on, the column still printed the nitrogen-only EAD. On a helium
+mix it now prints the END, with oxygen counted as narcotic; on a helium-free mix
+it stays the nitrogen-only EAD, as MultiDeco does. 90 m on 11/57 reads 33 m
+where it read 30 m.
+
+### Gas switch rows
+
+A GasSw row with no time is printed only when there is no stop at the switch
+depth. When there is one, the stop row carries the new gas, so 21 m EAN50 and
+9 m EAN80 each appear once.
+
+### Waypoint profiles are checked against the ceiling (1.39.2)
+
+Waypoints are still flown exactly as entered, but when a leg between them breaks
+the ceiling the plan warns, naming the leg and how far it went: the GF reached
+against GF high on ZH-L16C, metres above the ceiling on VVAL-79. VPM-B is not
+checked yet.
+
+### Gas switch on the fly (1.39.1)
+
+During the ascent the gas is checked at every grid depth, including depths
+without a stop, so the next stop is reached already on the new gas.
+
+Stop lists, run times, CNS, OTU and gas totals are unchanged by 1.39.2 and
+1.39.3 over the regression set.
+
+---
+
+## Engine 1.39.0 · apps 1.9.1
+
+### Gradient factors: the ascent is judged at the right depth
+
+The ascent test used the gradient factor of the depth the diver was at, not of
+the depth being ascended to. Leaving the last stop was therefore judged at the
+interpolated value, and on a single-stop schedule at GF Low, so GF High was
+never applied at all. Every ZH-L16C schedule with gradient factors was longer
+than the settings asked for.
+
+* 45 m / 20 min air with a 12 m / 20 min EAN50 level, GF 45/85, 6 m last stop:
+  **29 minutes at 6 m becomes 6**. MultiDeco gives 6:40 for the same dive.
+* 45 m / 25 min air with EAN50: 32 minutes of deco becomes 28.
+* 60 m / 25 min trimix 18/45 with EAN50 and O2, GF 30/85: 58 becomes 51.
+* 18 m / 40 min air: 9 minutes of deco becomes a no-stop dive.
+* The 70 m trimix comparison in Audit v3.6 now runs 129 minutes against
+  MultiDeco's 128, where it ran 133.
+
+VVAL-79, VPM-B, Bühlmann without gradient factors and GF 100/100 are unchanged.
+
+### Last stop
+
+Choose 3, 4.5, 5, 6 or 9 m (10, 15, 20 or 30 ft) in Config. The stop grid is
+built upward from the last stop, so 4.5 m with 3 m stops gives 4.5, 7.5, 10.5 m.
+A last stop that was not a multiple of the stop distance used to produce a plan
+with no stops at all and "TOTAL DECO TIME: 0 minutes" while the runtime grew.
+
+### Also
+
+* The legacy predictive ascent rule is removed, with the `AscentCredit` and
+  `ExtraSlow` settings and the environment override that went with them. One
+  ascent criterion remains.
+* Stop depths print a decimal where they need one.
+* The regression check never enabled gradient factors, which is why none of the
+  above was caught. It now covers GF 45/85, 30/85 and 20/95 with last stops of
+  3, 6 and 4.5 m.
+* Engine comments reduced to the equations, the parameter sources and the units.
+
+---
+
+## Engine 1.38.0 · apps 1.9.0
+
+### Altitude after diving
+
+Once a dive or a series has been calculated, an **AAD Calc** (Altitude After Diving)
+button appears before Surface Interval (an AAD Calc chip on a phone). It answers how long to
+wait before driving or flying to altitude, and what surface oxygen changes.
+
+* Inputs: car or airplane, altitude or cabin altitude, wait after surfacing,
+  drive or climb time, time at altitude or flight time, surface oxygen minutes,
+  from surfacing or before leaving.
+* **Method 1**, Bühlmann ZH-L16C on the engine's end tissues: the gradient factor
+  the trip needs, against the DAN-anchored limit (default) or the dive's GF High.
+* **Method 2**, Di Muro, Murphy, Vann and Howle 2020 interconnected model (UT or
+  EE1), Table 1 parameters: P(DCS) of the dive and the P(DCS) the trip adds,
+  limit 1 % by default. Its state is carried through Next dive. Helium and
+  closed circuit are refused.
+* Config: **Altitude after diving** (limits, model, mask O2 in percent) with a
+  short explanation; manual section added.
+
+### Other changes
+
+* Labels: **Travel Gas** and **Air Breaks** on the main screen and in Config.
+* Disclaimer ends "This is primarily an EDUCATIONAL TOOL."; the version line
+  reads "AI-(Lalo)assisted".
+* Manual and Config guide revised; the in-app text is identical on macOS, iOS
+  and Android.
+* Build fix: `czplan.h` includes `zp_altitude.h`, so Swift sees the altitude API.
+
+New engine file `zp_altitude.c`. Schedules are unchanged: the plan output of
+1.38.0 is identical to 1.37.0.
+
+---
+
+## Engine 1.37.0
+
+### Warnings are wrapped to the width of the plan
+
+The plan is a fixed-width document and the readers do not soft-wrap it, because
+wrapping a column layout destroys it. Warnings were appended to that document as
+single unbroken lines: the VVAL-79 helium refusal was **216 characters**, the gas
+density advisory 100. On a phone the line ran off the side, and the full-screen
+reader, which sizes the type to fit the widest line, shrank the whole schedule to
+suit a line nobody could read anyway.
+
+Warnings are now hard-wrapped to 55 columns, the width of the table, at the point
+they are created. One place, so the report, the share text and the printout all
+agree. The refusal now prints as five readable lines and the widest line in any
+report is 55 characters instead of 216.
+
+**No schedule changes.** All 62 stored configurations were run through 1.36.0 and
+1.37.0: every one differs in the warning block and not one differs in a stop, a
+run time, a gas, CNS or OTU.
+
+### Android: a refusal now says why
+
+On Android the engine's advisory warnings are stripped from under the schedule,
+deliberately, because on a phone that block runs to several wrapped lines beneath
+a table already short of height. A refusal is the opposite case: there is no
+schedule, and the warning is the only thing that says why. It was being stripped
+too, leaving `NO PLAN COMPUTED` and nothing else, while macOS printed the reason.
+
+The engine has always carried a `refused` flag; the JNI bridge never passed it.
+It now returns it, and the strip applies only when there is a plan to strip it
+from. Planning a trimix dive on VVAL-79 tells an Android diver what is wrong and
+what to use instead, as it already did on the Mac.
 
 ---
 
@@ -70,9 +211,12 @@ gas anyway.
 
 **If you have planned trimix on VVAL-18, replan it.** The model now carries the
 published nine-compartment VVAL-79 parameter set (NEDU TR 12-01, Table 3) and
-reproduces *USN Diving Manual Rev. 7, Table 9-7* to within one minute at sixteen
-of seventeen depths, six exactly. The twelve-compartment set it replaced gave
-21 min at 120 fsw where the manual says 15.
+reproduces *USN Diving Manual Rev. 7, Table 9-7* to within one minute at 15 of
+the 21 published depths and within half a minute at 8, on the Navy bottom-time
+convention. Every deviation is permissive, allowing more bottom time than the
+manual at every depth: 1.7 min at 100 fsw, 2.8 min at 45 fsw, 19 min at 25 fsw.
+The twelve-compartment set it replaced gave 21 min at 120 fsw where the manual
+says 15.
 
 A dive carrying helium is now refused with an explanation rather than computed.
 The Graham's law √(28/4) helium scaling that stood in for the missing Navy
@@ -432,10 +576,11 @@ diver ascends and the bubble expands under Boyle's law.
 What a diver notices is where decompression starts. On 80 m for 27 minutes with
 15/45, VPM-B holds its first stop at 51 m against ZHL-16C's 30 m.
 
-**Validation.** On Baker's own 80 msw benchmark this implementation reproduces
-his published schedule stop for stop — eighteen stops, every stop time, every
-run time, and the same start of the decompression zone. Two differences are
-deliberate and documented rather than hidden:
+**Validation.** On Baker's own 80 msw benchmark this implementation matches 13
+of his 18 stop times exactly and starts the decompression zone at the same
+depth. Total stop time is 94 minutes against his 90, because the ascent leg into
+a stop counts toward that stop here and the total rounds up to a whole minute.
+Two further differences are deliberate and documented rather than hidden:
 
 - The critical volume loop is iterated to convergence, which is what Baker's
   written rule specifies. His compiled 2003 program stops one iteration earlier.

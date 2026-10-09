@@ -96,13 +96,15 @@ against [Subsurface](https://github.com/subsurface/subsurface) and
 [Abysner](https://github.com/NeoTech-Software/Abysner) — all three compute the
 same result. VVAL-79 no-stop limits are checked against *U.S. Navy Diving
 Manual Revision 7, Table 9-7*, which they reproduce to within one minute at
-sixteen of seventeen depths. Schedules have also been compared against MultiDeco
-and TechDeco on matched settings.
+15 of the 21 published depths, always allowing slightly more bottom time than
+the manual. Schedules have also been compared against MultiDeco and TechDeco on
+matched settings.
 
-VPM-B is validated against Erik Baker's own reference output: on his 80 msw
-trimix benchmark it reproduces the published schedule stop for stop — eighteen
-stops, every stop time, every run time. Two deliberate differences are
-documented in the manual rather than hidden. See the *Models* section.
+VPM-B is checked against Erik Baker's own reference output: on his 80 msw
+trimix benchmark 13 of the 18 stop times match exactly and the decompression
+zone starts at the same depth, with the first stop one increment deeper and
+four minutes more total stop time. The reasons are documented in the manual
+rather than hidden. See the *Models* section.
 
 ## Supporting the project
 

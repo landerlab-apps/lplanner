@@ -124,6 +124,6 @@ Public License v3.
 
 Questions about this policy, or about the app:
 
-**scubalander@gmail.com**
+**carlos.lander@etik.com**
 
 Landerlab — Carlos Lander

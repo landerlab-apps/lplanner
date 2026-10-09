@@ -129,8 +129,10 @@ or an actual time — before **Calculate** will work. This is deliberate: guessi
 it from the clock would let you get a schedule without confronting the fact that
 a previous dive is still loaded.
 
-Use your exact surface interval, or a shorter one if you are unsure how long you
-will wait.
+Always use your exact surface interval, or a shorter one if you are unsure how
+long you waited between dives. For the probability of driving or flying to
+altitude afterwards, with a model beyond Bühlmann, see Altitude after diving
+below.
 
 **Clear** declares you clean again.
 
@@ -141,6 +143,31 @@ will wait.
 **Log** is a different thing entirely. Every successful Calculate is recorded
 there automatically with the settings that produced it. It is history only —
 nothing in the log affects a future calculation.
+
+## Altitude after diving
+
+Once a dive has been calculated, the Altitude After Diving (**AAD Calc**) button appears before Surface
+Interval (on a phone, an AAD Calc chip in the settings strip). It answers for the
+calculated dive, or for the whole series carried with Next dive.
+
+Enter car or airplane, the altitude (for a flight, the cabin altitude), how long
+you will wait after surfacing, how long the drive or climb takes, how long you
+stay up there, and optionally surface oxygen taken from surfacing or just before
+leaving. Press **Calculate**.
+
+* **Method 1, Bühlmann ZH-L16C.** The gradient factor the trip needs at its worst
+  moment, against a limit. **DAN 12 h** (default) is the limit that reproduces
+  DAN's 12 hours after a single no-stop dive; **Dive GF High** is what the dive
+  model alone allows and is far more permissive.
+* **Method 2, Di Muro 2020 interconnected model (UT or EE1).** P(DCS) of the dive,
+  and the P(DCS) the trip adds, against a limit (1 % by default, decimals
+  allowed). Nitrogen only: helium and closed-circuit dives are refused.
+
+Both give the earliest departure, the oxygen needed to leave at your chosen time,
+and a table for leaving after 1 to 24 hours. Mask O2 is the percentage actually
+breathed: 100 for a demand valve with a sealed mask or a mouthpiece and nose clip,
+60 to 90 for a non-rebreather mask. Neither model was fitted to altitude
+exposures: treat the answers as model output.
 
 ---
 
@@ -171,6 +198,8 @@ depths (ENDs).
 Three models ship, and the picker chooses between them.
 
 **ZHL16-C** is the Bühlmann set used here, optionally with gradient factors.
+With gradient factors enabled, Pyle deep stops are disabled — GF Low provides
+the deep-stop function — and Conservatism is ignored.
 
 **VVAL-79** is the U.S. Navy Thalmann EL-DCM (exponential uptake, linear
 elimination) with the VVal-79 air parameter set behind the Diving Manual
@@ -182,11 +211,6 @@ rather than computed.
 implementation. It limits the volume of gas released from bubble nuclei rather
 than the tension dissolved in tissue, which is why it begins decompression much
 deeper — most visibly on helium mixes.
-
-Gradient factors and Conservatism apply to **ZHL16-C only**. VVAL-79 has
-neither. VPM-B has its own conservatism ladder, described below, and ignores the
-Conservatism slider. With gradient factors enabled, Pyle deep stops are disabled
-— GF Low provides the deep-stop function — and Conservatism is ignored.
 
 ### VPM-B
 Shown only when VPM-B is the selected model.
@@ -215,42 +239,20 @@ still allowed. GF High is the standard behavior for ZHL16-C. GF Low is stricter
 and ends the no-decompression phase earlier.
 
 ### Conditions
-**Altitude** of the dive site, 0 for sea level. Above sea level the air is
-thinner, so the same dive carries more decompression.
+**Altitude** of the dive site, 0 for sea level.
 
-Two further settings appear once altitude is above zero, and they matter more
-than most:
-
-**Diver equilibrated at this altitude** — your tissues have off-gassed their
-excess nitrogen to match the thinner air. The U.S. Navy Diving Manual puts that
-at about twelve hours at altitude.
-
-**Hours at altitude** — how long since you arrived, for the case in between.
-`0` means you have just driven up and are still carrying your sea-level
-nitrogen, and it is the default. The tissues wash out toward the altitude
-equilibrium at their own individual rates, so the slow ones are still loaded
-well after the fast ones have finished.
-
-State this honestly. At 3000 m the difference between "just arrived" and
-"equilibrated" can double the decompression, and the plan header records which
-answer produced your schedule.
-
-Note this is *equilibration*, not *acclimatisation*. The second is the body's
-much slower adjustment to the lower oxygen, and no decompression model —
-including this one — accounts for it.
-
-**Conservatism** applies only to ZHL16-C with gradient factors switched off.
-It (0–50 %) preloads the tissue compartments
-with additional inert gas — nitrogen, and helium in proportion when the profile
-uses trimix — weighted from the fast compartments (none) to the slow ones (the
-full percentage), as if a previous dive had been made. Zero is the clean-diver
-profile.
+**Conservatism** applies only to ZHL16-C with gradient factors off. It (0-50 %)
+preloads the compartments with extra inert gas, weighted from the fast
+compartments (none) to the slow ones (the full percentage), as if a previous
+dive had been made. Zero is the clean-diver profile.
 
 ### Stop depths
 **Stop distance** is the interval between decompression stops — 3 m is the
 convention; some rebreather divers prefer 6 m. **Last stop** is the depth of the
-final stop; some prefer pulling the 10 ft / 3 m stop deeper. Both apply to every
-schedule, whichever model, gradient factors, or deep stops are in use.
+final stop, chosen from 3, 4.5, 5, 6 or 9 m (10, 15, 20 or 30 ft); some prefer
+pulling the 3 m stop deeper. The stop grid is built upward from the last stop,
+so 4.5 m with 3 m stops gives 4.5, 7.5, 10.5 m. Both apply to every schedule,
+whichever model, gradient factors, or deep stops are in use.
 
 ### Deep stops
 Pyle deep stops insert short stops between the bottom and the first normal stop
@@ -296,7 +298,7 @@ changes to the back gas at the first stop increment where the back gas is safe.
 On 10/50 that is 9 m: 0.18 bar needs 1.8 bar of ambient pressure, which is
 7.83 m, rounded up to the grid.
 
-It costs no decompression. It only moves the first few metres onto a stage, and
+It costs no decompression. It only moves the first few meters onto a stage, and
 the gas report splits the stage figure into travel and deco. If no mix you carry
 is breathable at the surface, the plan says so and descends on the back gas
 anyway.
@@ -343,15 +345,20 @@ with water vapour taken as 0.0627 bar (Bühlmann's value, Rq = 1.0). ZHL-16B was
 dropped in engine 1.5.0: the two sets differ only in the b coefficients of the
 slow compartments, B being the less conservative, and carrying both invited a
 choice with no good basis. The table was deleted outright in engine 1.34.0, and
-`UseBValues` is no longer a key. Bühlmann's optional 1b compartment is off by default and available as
-`Compartment1b: y`, which makes the standard sixteen match Subsurface exactly.
+`UseBValues` is no longer a key. The sixteen compartments begin with the 5 min compartment, which is Bühlmann's
+**1b**, and that is also what Subsurface uses, so the two agree with no setting
+at all. `Compartment1b: y` adds a seventeenth compartment, the 4 min one, which
+is Bühlmann's compartment **1**. The key is misnamed: 1b is already in use by
+default, and the setting switches on compartment 1.
 
 **VVAL-79 / Thalmann EL-DCM** — the U.S. Navy exponential-linear model:
 exponential uptake, linear elimination. Gradient factors and conservatism do not
 apply to it, by design. It carries the published nine-compartment VVAL-79
 parameter set (NEDU TR 12-01, Table 3) and reproduces *U.S. Navy Diving Manual
-Revision 7, Table 9-7* to within one minute at sixteen of seventeen depths, six
-of them exactly.
+Revision 7, Table 9-7* to within one minute at 15 of the 21 published depths,
+and within half a minute at 8, on the Navy bottom-time convention. Every
+deviation is permissive: it allows more bottom time than the manual at every
+depth, by 1.7 min at 100 fsw, 2.8 min at 45 fsw and 19 min at 25 fsw.
 
 *Air, nitrox and oxygen only.* The U.S. Navy publishes no helium parameters for
 this model. Earlier versions filled the gap with a Graham's law √(28/4) scaling;
@@ -370,12 +377,14 @@ law.
 The consequence a diver notices is where decompression starts. On 80 m for 27
 minutes with 15/45, VPM-B's first stop is 51 m against ZHL16-C's 30 m.
 
-This implementation is validated against Baker's own published output: on his
-80 msw benchmark it reproduces the schedule stop for stop. Two details differ
-deliberately and are documented rather than hidden. The critical volume loop is
-iterated to convergence, as Baker's written rule specifies, which gives about
-two minutes less than his compiled 2003 program on that dive. And the first stop
-is placed by this engine's ascent rule rather than Baker's, which can put it one
+This implementation is checked against Baker's own published output. On his
+80 msw benchmark 13 of the 18 stop times match exactly and the decompression
+zone starts at the same depth. Total stop time is 94 minutes against his 90,
+because the ascent leg into a stop counts toward that stop here and the total
+rounds up to a whole minute. The critical volume loop is iterated to
+convergence, as Baker's written rule specifies, where his compiled 2003 program
+stops one iteration earlier. And the first stop is placed by this engine's
+ascent rule rather than Baker's, which puts it one
 stop increment shallower. Cross-check against a planner you trust before diving
 it.
 
